@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Vista Gráfico: barras apiladas por mes -->
+    <!-- Columnas de margen en la vista lista de órdenes de venta -->
+    <record id="view_sale_order_list_margin" model="ir.ui.view">
+        <field name="name">sale.order.list.margin</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="margin"
+                       string="Ganancia"
+                       widget="monetary"
+                       optional="show"
+                       groups="base.group_user"/>
+                <field name="margin_percent"
+                       string="Margen %"
+                       widget="percentage"
+                       optional="show"
+                       groups="base.group_user"/>
+            </field>
+        </field>
+    </record>
+
+
     <record id="view_sale_profitability_graph" model="ir.ui.view">
         <field name="name">sale.order.profitability.graph</field>
         <field name="model">sale.order</field>
