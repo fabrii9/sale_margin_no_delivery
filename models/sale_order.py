@@ -1,9 +1,30 @@
 # -*- coding: utf-8 -*-
-from odoo import api, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    revenue_products = fields.Monetary(
+        string="Ingresos (sin envío)",
+        compute='_compute_revenue_cost_products',
+        store=True,
+        groups="base.group_user",
+    )
+    cost_products = fields.Monetary(
+        string="Costo de productos",
+        compute='_compute_revenue_cost_products',
+        store=True,
+        groups="base.group_user",
+    )
+
+    @api.depends('order_line.price_subtotal', 'order_line.purchase_price',
+                 'order_line.product_uom_qty', 'order_line.is_delivery')
+    def _compute_revenue_cost_products(self):
+        for order in self:
+            non_delivery = order.order_line.filtered(lambda l: not l.is_delivery and not l.display_type)
+            order.revenue_products = sum(non_delivery.mapped('price_subtotal'))
+            order.cost_products = sum(l.purchase_price * l.product_uom_qty for l in non_delivery)
 
     @api.depends('order_line.margin', 'order_line.price_subtotal', 'order_line.is_delivery', 'amount_untaxed')
     def _compute_margin(self):

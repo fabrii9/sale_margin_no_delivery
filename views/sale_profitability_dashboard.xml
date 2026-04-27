@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista Gráfico: barras apiladas por mes -->
+    <record id="view_sale_profitability_graph" model="ir.ui.view">
+        <field name="name">sale.order.profitability.graph</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Rentabilidad mensual" type="bar" stacked="1">
+                <field name="date_order" interval="month" type="row"/>
+                <field name="cost_products" type="measure" string="Costo"/>
+                <field name="margin" type="measure" string="Ganancia"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista Pivot: detalle por mes -->
+    <record id="view_sale_profitability_pivot" model="ir.ui.view">
+        <field name="name">sale.order.profitability.pivot</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Rentabilidad mensual" display_quantity="1">
+                <field name="date_order" interval="month" type="row" string="Mes"/>
+                <field name="revenue_products" type="measure" string="Ingresos (sin envío)"/>
+                <field name="cost_products" type="measure" string="Costo"/>
+                <field name="margin" type="measure" string="Ganancia"/>
+                <field name="margin_percent" type="measure" string="Margen %"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Acción: abre gráfico + pivot, solo órdenes confirmadas -->
+    <record id="action_sale_profitability" model="ir.actions.act_window">
+        <field name="name">Rentabilidad de ventas</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="domain">[('state', 'in', ['sale', 'done'])]</field>
+        <field name="context">{
+            'search_default_filter_date': 1,
+            'group_by': ['date_order:month']
+        }</field>
+        <field name="view_ids" eval="[
+            (ref('view_sale_profitability_graph'), 'graph'),
+            (ref('view_sale_profitability_pivot'), 'pivot'),
+        ]"/>
+    </record>
+
+    <!-- Menú bajo Ventas > Informes -->
+    <menuitem
+        id="menu_sale_profitability"
+        name="Rentabilidad"
+        parent="sale.sale_report_menu"
+        action="action_sale_profitability"
+        sequence="20"
+        groups="base.group_user"/>
+
+</odoo>

@@ -13,6 +13,9 @@
     'category': 'Sales/Sales',
     'author': 'Custom',
     'depends': ['sale_margin', 'delivery'],
+    'data': [
+        'views/sale_profitability_dashboard.xml',
+    ],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
