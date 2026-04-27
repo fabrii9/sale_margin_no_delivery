@@ -11,6 +11,7 @@
                 <field name="margin"
                        string="Ganancia"
                        widget="monetary"
+                       sum="Ganancia total"
                        optional="show"
                        groups="base.group_user"/>
                 <field name="margin_percent"
