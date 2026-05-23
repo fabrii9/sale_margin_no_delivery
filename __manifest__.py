@@ -15,6 +15,7 @@
     'depends': ['sale_margin', 'delivery'],
     'data': [
         'views/sale_profitability_dashboard.xml',
+        'views/choose_delivery_carrier_views.xml',
     ],
     'installable': True,
     'auto_install': False,

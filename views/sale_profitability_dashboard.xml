@@ -1,11 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Columnas de margen en la vista lista de órdenes de venta -->
+    <!-- Herencia sobre la vista base de lista de órdenes de venta -->
     <record id="view_sale_order_list_margin" model="ir.ui.view">
         <field name="name">sale.order.list.margin</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="margin"
+                       string="Ganancia"
+                       widget="monetary"
+                       sum="Ganancia total"
+                       optional="show"
+                       groups="base.group_user"/>
+                <field name="margin_percent"
+                       string="Margen %"
+                       widget="percentage"
+                       optional="show"
+                       groups="base.group_user"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Herencia sobre la vista primaria de Órdenes de Venta -->
+    <record id="view_order_tree_margin" model="ir.ui.view">
+        <field name="name">sale.order.tree.margin (orders)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="margin"
+                       string="Ganancia"
+                       widget="monetary"
+                       sum="Ganancia total"
+                       optional="show"
+                       groups="base.group_user"/>
+                <field name="margin_percent"
+                       string="Margen %"
+                       widget="percentage"
+                       optional="show"
+                       groups="base.group_user"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Herencia sobre la vista primaria de Upload de Órdenes -->
+    <record id="sale_order_list_upload_margin" model="ir.ui.view">
+        <field name="name">sale.order.tree.upload.margin</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_list_upload"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="margin"
+                       string="Ganancia"
+                       widget="monetary"
+                       sum="Ganancia total"
+                       optional="show"
+                       groups="base.group_user"/>
+                <field name="margin_percent"
+                       string="Margen %"
+                       widget="percentage"
+                       optional="show"
+                       groups="base.group_user"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Herencia sobre la vista primaria de Cotizaciones -->
+    <record id="view_quotation_tree_margin" model="ir.ui.view">
+        <field name="name">sale.order.tree.margin (quotes)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="margin"
+                       string="Ganancia"
+                       widget="monetary"
+                       sum="Ganancia total"
+                       optional="show"
+                       groups="base.group_user"/>
+                <field name="margin_percent"
+                       string="Margen %"
+                       widget="percentage"
+                       optional="show"
+                       groups="base.group_user"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Herencia sobre la vista primaria de Cotizaciones con Onboarding -->
+    <record id="view_quotation_tree_with_onboarding_margin" model="ir.ui.view">
+        <field name="name">sale.order.tree.margin (quotes onboarding)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
         <field name="arch" type="xml">
             <field name="amount_total" position="after">
                 <field name="margin"

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="choose_delivery_carrier_view_form_inherit_manual_price" model="ir.ui.view">
+        <field name="name">choose.delivery.carrier.form.manual.price</field>
+        <field name="model">choose.delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form"/>
+        <field name="arch" type="xml">
+            <!--
+                En Odoo 19 el wizard de envío muestra 'display_price' (readonly)
+                y mantiene 'delivery_price' invisible.
+                Esta herencia hace visible y editable 'delivery_price' para que
+                el usuario pueda introducir manualmente el costo de envío.
+            -->
+
+            <!-- Eliminar el campo delivery_price invisible original -->
+            <xpath expr="//field[@name='delivery_price' and @invisible='1']" position="replace"/>
+
+            <!-- Re-apuntar el label al campo editable -->
+            <xpath expr="//label[@for='display_price']" position="attributes">
+                <attribute name="for">delivery_price</attribute>
+            </xpath>
+
+            <!-- Reemplazar display_price (readonly) por delivery_price (editable) -->
+            <xpath expr="//field[@name='display_price']" position="replace">
+                <field name="delivery_price"
+                       string="Cost"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       invisible="not carrier_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
